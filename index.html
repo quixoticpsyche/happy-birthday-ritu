@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Ritu! 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Quicksand:wght@300;400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:linear-gradient(180deg,#FFF7F3 0%,#FFE8E0 30%,#F0E0F5 60%,#E0F0E8 100%);font-family:'Quicksand',sans-serif;min-height:100vh;overflow-x:hidden}
+
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-12px)}40%{transform:translateX(12px)}60%{transform:translateX(-8px)}80%{transform:translateX(8px)}}
+@keyframes floatHeart{0%{transform:translateY(100vh) scale(.5);opacity:0}10%{opacity:.4}90%{opacity:.4}100%{transform:translateY(-10vh) scale(1.2);opacity:0}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cakePop{0%{opacity:0;transform:scale(0) rotate(-20deg)}60%{transform:scale(1.3) rotate(5deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.15)}30%{transform:scale(1)}}
+
+.floating-hearts{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.fh{position:absolute;animation:floatHeart linear infinite;opacity:.35}
+
+.header{text-align:center;padding:2.5rem 1rem 1rem;animation:fadeUp .8s ease forwards;position:relative;z-index:1}
+.header .cake{font-size:48px;margin-bottom:8px;display:inline-block;animation:cakePop .6s ease forwards}
+.header h1{font-family:'Sacramento',cursive;font-size:clamp(3rem,10vw,5.5rem);color:#E88B6A;line-height:1;text-shadow:2px 4px 12px rgba(232,139,106,.15)}
+.header h2{font-family:'Sacramento',cursive;font-size:clamp(2rem,6vw,3.5rem);color:#D4537E;margin-top:4px}
+.header .sub{font-family:'Caveat',cursive;font-size:22px;color:#7B5E4D;margin-top:12px}
+
+.dots{display:flex;justify-content:center;gap:8px;margin-top:20px}
+.dot{width:12px;height:12px;border-radius:50%;transition:all .3s ease;border:2px solid transparent}
+.dot.done{background:#4CAF50}
+.dot.active{border-width:2px}
+.dot.idle{background:#ddd}
+
+.card-wrapper{perspective:1200px;width:100%;max-width:420px;margin:28px auto 0;min-height:480px;position:relative;z-index:1;padding:0 1rem}
+.card-inner{position:relative;width:100%;min-height:480px;transition:transform .8s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+.card-inner.flipped{transform:rotateY(180deg)}
+.card-inner.shaking{animation:shake .5s ease}
+
+.card-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:24px;padding:2rem 1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.card-front{background:white;box-shadow:0 8px 40px rgba(0,0,0,.08),0 2px 8px rgba(0,0,0,.04)}
+.card-back{transform:rotateY(180deg);box-shadow:0 8px 40px rgba(0,0,0,.08)}
+
+.card-count{position:absolute;top:16px;right:20px;font-size:13px;color:#aaa;font-weight:600}
+.card-icon{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:20px}
+.card-label{font-size:12px;text-transform:uppercase;letter-spacing:3px;font-weight:700;margin-bottom:12px}
+.card-question{font-family:'Caveat',cursive;font-size:26px;text-align:center;color:#3a2e24;margin:0 0 24px;line-height:1.3}
+
+.option-btn{padding:12px 16px;border-radius:14px;border:2px solid #eee;background:white;font-family:'Quicksand',sans-serif;font-size:15px;font-weight:600;color:#3a2e24;cursor:pointer;transition:all .2s ease;width:100%;text-align:center;margin-bottom:10px}
+.option-btn:hover{transform:scale(1.02)}
+.option-btn.correct{border-color:#4CAF50;background:#E8F5E9;transform:scale(1.03)}
+.option-btn.wrong{border-color:#FF5252;background:#FFEBEE}
+
+.wrong-msg{font-family:'Caveat',cursive;font-size:18px;color:#FF5252;margin-top:8px}
+
+.back-icon{width:56px;height:56px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.back-label{font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;margin-bottom:12px}
+.back-dyk{font-family:'Caveat',cursive;font-size:24px;text-align:center;color:#3a2e24;line-height:1.5;max-width:340px}
+
+.nav{display:flex;justify-content:center;align-items:center;gap:20px;margin-top:28px;position:relative;z-index:1}
+.nav-btn{width:48px;height:48px;border-radius:50%;border:2px solid #ddd;background:white;font-size:20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;font-weight:700;color:#7B5E4D}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed}
+.nav-btn:not(:disabled):hover{background:#f5f5f5;border-color:#bbb}
+.nav-status{font-family:'Caveat',cursive;font-size:18px;color:#7B5E4D}
+.progress-msg{text-align:center;margin-top:24px;font-family:'Caveat',cursive;font-size:18px;color:#7B5E4D;opacity:.7;position:relative;z-index:1}
+
+.reveal-btn{font-family:'Caveat',cursive;font-size:24px;font-weight:700;padding:16px 40px;border-radius:50px;border:none;background:linear-gradient(135deg,#FF8A80,#D4537E);color:white;cursor:pointer;box-shadow:0 8px 28px rgba(212,83,126,.3);animation:pulse 2s infinite;transition:transform .2s;margin-top:36px;position:relative;z-index:1}
+.reveal-btn:hover{transform:scale(1.05)}
+
+.letter-wrap{animation:fadeUp 1s ease forwards;position:relative;z-index:1;padding:0 1rem}
+.letter-intro{text-align:center;margin-bottom:24px;font-family:'Caveat',cursive;font-size:22px;color:#D4537E}
+.letter-card{background:linear-gradient(135deg,#FFF7F3,#FFE5D9 50%,#FFF3CD);border-radius:24px;padding:2.5rem 2rem;max-width:520px;margin:0 auto;box-shadow:0 12px 48px rgba(255,181,194,.2);border:1px solid rgba(255,181,194,.3);position:relative}
+.letter-card .seal{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:28px}
+.letter-card .greeting{font-family:'Sacramento',cursive;font-size:36px;color:#E88B6A;margin-bottom:16px}
+.letter-card .body{font-family:'Caveat',cursive;font-size:20px;line-height:2;color:#3a2e24}
+.letter-card .body p{margin-bottom:14px}
+.letter-card .sign{font-family:'Sacramento',cursive;font-size:28px;color:#E88B6A;text-align:right;margin-top:24px}
+
+.footer-end{text-align:center;margin-top:40px;padding-bottom:3rem;position:relative;z-index:1}
+.footer-end .big-heart{font-size:48px;display:inline-block;animation:heartbeat 1.5s infinite;cursor:pointer}
+.footer-end .msg{font-family:'Caveat',cursive;font-size:22px;color:#7B5E4D;margin-top:8px}
+.footer-end .small{font-size:13px;color:#aaa;margin-top:24px;letter-spacing:1px}
+
+@media(max-width:480px){
+  .card-wrapper{max-width:340px;min-height:520px}
+  .card-inner{min-height:520px}
+  .card-question{font-size:22px}
+  .back-dyk{font-size:20px}
+  .letter-card{padding:2rem 1.5rem}
+  .letter-card .body{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<div class="floating-hearts" id="fhearts"></div>
+<canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999"></canvas>
+
+<div class="header">
+  <div class="cake">🎂</div>
+  <h1>Happy Birthday</h1>
+  <h2>Ritu!</h2>
+  <p class="sub">Answer correctly to unlock each card 💕</p>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div id="cardArea"></div>
+<div id="navArea"></div>
+<div id="letterArea"></div>
+
+<script>
+const CARDS=[
+{id:1,question:"What's my favourite sweet?",options:["Gulab Jamun","Rasmalai","Jalebi","Rasgulla"],answer:1,dyk:"DYK we both love Rasmalai? \u{1F90C}\u{1F3FB} When I told you mine was Rasmalai too, you literally went \"YOU LIKE RASMALAI TOOOO \u{1F62D}\u{1F62D}\" \u2014 yeah babe, we really are clones.",emoji:"\u{1F36E}",color:"#FFE5D9",accent:"#E88B6A"},
+{id:2,question:"What does everyone in my family call me despite being the eldest?",options:["Bittu","Chhoti","Gudiya","Munni"],answer:1,dyk:"DYK despite being the eldest in my family, everyone calls me 'Chhoti'? \u{1F602} New people always get confused. Very ironic indeed.",emoji:"\u{1F476}",color:"#E8D5F5",accent:"#9B72CF"},
+{id:3,question:"What's his nickname at home?",options:["Chintu","Babai","Guddu","Sonu"],answer:1,dyk:"DYK his nickname evolved from Papai \u2192 Baba \u2192 Babai? \u{1F62D} And when I asked what it means, he said \"Why does it have to mean anything \u{1F972}\" \u2014 SO CUTE BHAII.",emoji:"\u{1F3F7}\uFE0F",color:"#D4F0E7",accent:"#3AAF85"},
+{id:4,question:"What was Rule #6 that I added to our friendship rules?",options:["No lying","No ignoring texts","No making fun of my height","No sad songs at night"],answer:2,dyk:"DYK Rule #6 exists because someone wouldn't stop \u{1F624}? And his response was literally \"Aaahhhh Uurrgghhhh Kdpwhe jk prhrodnsbaisp\" \u2014 keyboard smash of defeat. I WON that one.",emoji:"\u{1F4CF}",color:"#FFF3CD",accent:"#D4A017"},
+{id:5,question:"What do Jharkhandis do instead of saying 'I love you'?",options:["Write poems","Make litti chokha","Send flowers","Dance in the rain"],answer:1,dyk:"DYK \"Jharkhandi's don't say I love you\" \u2014 they make you litti chokha instead \u{1F60B}? And then there's the iconic song: 'cycle se aaya sanam, Ranchi se Rourkela tere liye' \u{1F495}",emoji:"\u{1FAD3}",color:"#FFD6E0",accent:"#D4537E"},
+{id:6,question:"I once ran half a km from a hospital. Why?",options:["Saw a spider","Didn't want injection","Got lost","Chased a cat"],answer:1,dyk:"DYK I once ran HALF A KILOMETER from the hospital because I didn't want an injection? \u{1F489}\u{1F62D} Also I once vomited into my papa's shirt pocket. While he was wearing it. I was... something else as a kid.",emoji:"\u{1F3C3}\u200D\u2640\uFE0F",color:"#E0F0FF",accent:"#3B82D9"}
+];
+
+const LETTER={
+greeting:"My Dearest Ritu,",
+body:[
+"Happy Birthday to the most incredible girl I know, my bbg, my ray of sunshine, my \"practically my clone.\" \u{1F33B}",
+"From that very first night of sticker wars on January 2nd, to 60,000+ messages, countless \"mute krke video call karo\" requests, and our never-ending Bihari vs Jharkhandi debate \u2014 every single moment with you has been magic.",
+"You're the girl who downloads songs to her phone in 2026 \u{1F3B5}, who says sorry for absolutely nothing \u{1F62D}, who's ALWAYS up for ganne ka juice \u{1F964}, and who taught me that random facts can be the most intimate way to know someone.",
+"\"Maybe we are destined to be together\" \u2014 I said it once at 3 AM and I mean it more every day. You are gorgeous and always a feast for my eyes. Pretty, smart, and yeah... a lil psycho \u{1F61C}",
+"You once told me \"Jharkhandi's don't say I love you.\" Well, this half-Bihari baddie stole my heart anyway. And I'm not asking for it back.",
+"Here's to more stolen video calls, more DYKs at midnight, more of your birthdays, more of you, more of us. \u{1F37B} I love you to the moon and back, Cutiepie.  \u{1F319}\u{1F495}",
+],
+sign:"Forever yours, with all my heart \u2764\uFE0F"
+};
+
+let current=0,unlocked=new Set(),showingLetter=false;
+
+function initHearts(){
+const c=document.getElementById('fhearts');
+const em=["\u{1F495}","\u{1F497}","\u{1F496}","\u{1FA77}","\u2728","\u{1F338}"];
+for(let i=0;i<12;i++){const s=document.createElement('span');s.className='fh';s.textContent=em[i%em.length];s.style.left=Math.random()*100+'%';s.style.fontSize=(14+Math.random()*10)+'px';s.style.animationDuration=(8+Math.random()*8)+'s';s.style.animationDelay=(Math.random()*10)+'s';c.appendChild(s);}
+}
+
+function fireConfetti(){
+const canvas=document.getElementById('confettiCanvas');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+const cols=["#FFB5C2","#E8D5F5","#FF8A80","#D4F0E7","#FFC1CC","#FFF3CD","#FFD700","#FF69B4"];
+const ps=Array.from({length:120},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,w:Math.random()*8+4,h:Math.random()*6+3,c:cols[Math.floor(Math.random()*cols.length)],vy:Math.random()*3+2,vx:Math.random()*2-1,r:Math.random()*360,rv:Math.random()*6-3}));
+let frame;function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);let alive=false;ps.forEach(p=>{if(p.y<canvas.height+20)alive=true;p.y+=p.vy;p.x+=p.vx;p.r+=p.rv;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r*Math.PI/180);ctx.fillStyle=p.c;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore()});if(alive)frame=requestAnimationFrame(draw);}draw();
+setTimeout(()=>{cancelAnimationFrame(frame);ctx.clearRect(0,0,canvas.width,canvas.height)},5000);
+}
+
+function renderDots(){
+const d=document.getElementById('dots');d.innerHTML='';
+CARDS.forEach((c,i)=>{const dot=document.createElement('div');dot.className='dot';if(unlocked.has(c.id))dot.classList.add('done');else if(i===current){dot.classList.add('active');dot.style.borderColor=c.accent;dot.style.background=c.accent+'40';}else dot.classList.add('idle');d.appendChild(dot);});
+}
+
+function renderCard(){
+if(showingLetter)return;
+const c=CARDS[current];const isUnlocked=unlocked.has(c.id);
+const area=document.getElementById('cardArea');
+area.innerHTML=`
+<div class="card-wrapper">
+<div class="card-inner ${isUnlocked?'flipped':''}" id="cardInner">
+<div class="card-face card-front" style="border:2px solid ${c.color}">
+<div class="card-count">${current+1} / ${CARDS.length}</div>
+<div class="card-icon" style="background:${c.color}">${c.emoji}</div>
+<div class="card-label" style="color:${c.accent}">Unlock this card</div>
+<p class="card-question">${c.question}</p>
+<div id="options"></div>
+<div id="wrongMsg"></div>
+</div>
+<div class="card-face card-back" style="background:linear-gradient(135deg,${c.color},white);border:2px solid ${c.accent}30">
+<div class="back-icon">\u2705</div>
+<div class="back-label" style="color:${c.accent}">Card unlocked!</div>
+<p class="back-dyk">${c.dyk}</p>
+</div>
+</div>
+</div>`;
+const opts=document.getElementById('options');
+c.options.forEach((opt,i)=>{const btn=document.createElement('button');btn.className='option-btn';btn.style.borderColor=c.color;btn.textContent=opt;btn.onclick=()=>handleAnswer(i,c,btn);opts.appendChild(btn);});
+}
+
+function handleAnswer(idx,card,btn){
+if(unlocked.has(card.id))return;
+if(idx===card.answer){
+btn.classList.add('correct');document.getElementById('wrongMsg').innerHTML='';
+setTimeout(()=>{unlocked.add(card.id);document.getElementById('cardInner').classList.add('flipped');renderDots();renderNav();},500);
+}else{
+btn.classList.add('wrong');document.getElementById('cardInner').classList.add('shaking');
+document.getElementById('wrongMsg').innerHTML='<p class="wrong-msg">Nope! Try again babe \u{1F61C}</p>';
+setTimeout(()=>{btn.classList.remove('wrong');document.getElementById('cardInner').classList.remove('shaking');},600);
+}
+}
+
+function renderNav(){
+if(showingLetter)return;
+const allDone=unlocked.size===CARDS.length;const area=document.getElementById('navArea');
+let html=`<div class="nav">
+<button class="nav-btn" id="prevBtn" ${current===0?'disabled':''} aria-label="Previous">\u2190</button>
+<span class="nav-status">${unlocked.has(CARDS[current].id)?'Unlocked! \u2705':'\u{1F512} Locked'}</span>
+<button class="nav-btn" id="nextBtn" ${current===CARDS.length-1?'disabled':''} aria-label="Next">\u2192</button>
+</div>`;
+if(allDone)html+=`<div style="text-align:center"><button class="reveal-btn" id="revealBtn">\u{1F389} All cards unlocked! Reveal your letter \u{1F48C}</button></div>`;
+else html+=`<p class="progress-msg">${unlocked.size} of ${CARDS.length} cards unlocked \u2014 keep going! \u{1F513}</p>`;
+area.innerHTML=html;
+document.getElementById('prevBtn').onclick=()=>{if(current>0){current--;renderDots();renderCard();renderNav();}};
+document.getElementById('nextBtn').onclick=()=>{if(current<CARDS.length-1){current++;renderDots();renderCard();renderNav();}};
+const rb=document.getElementById('revealBtn');if(rb)rb.onclick=revealLetter;
+}
+
+function revealLetter(){
+showingLetter=true;fireConfetti();
+document.getElementById('cardArea').innerHTML='';document.getElementById('navArea').innerHTML='';
+const area=document.getElementById('letterArea');
+let bodyHtml=LETTER.body.map(p=>`<p>${p}</p>`).join('');
+area.innerHTML=`
+<div class="letter-wrap">
+<p class="letter-intro">\u{1F389} You unlocked all the cards! Here's your letter... \u{1F48C}</p>
+<div class="letter-card">
+<div class="seal">\u{1F48C}</div>
+<p class="greeting">${LETTER.greeting}</p>
+<div class="body">${bodyHtml}</div>
+<p class="sign">${LETTER.sign}</p>
+</div>
+<div class="footer-end">
+<div class="big-heart" id="bigHeart">\u2764\uFE0F</div>
+<p class="msg">Happy Birthday, my Cutiepie \u{1F382}\u2728</p>
+
+</div>
+</div>`;
+document.getElementById('bigHeart').onclick=fireConfetti;
+}
+
+initHearts();renderDots();renderCard();renderNav();
+</script>
+</body>
+</html>
